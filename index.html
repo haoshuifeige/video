@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>test video</title>
+<link rel="stylesheet" href="static/jquery/jquery.mobile.min.css" />     
+<script src="static/jquery/jquery-1.7.1.min.js"></script>     
+<script src="static/jquery/jquery.mobile.min.js"></script>
+
+<style>video {object-fit:fill;}</style>
+
+</head>
+<body>
+<div>
+
+<div data-role="header" data-position="fixed" data-fullscreen="false">	 
+  <h1 id='current'></h1>
+</div>
+<div data-role="content">
+	<div>
+		<video src="" controls id="video">
+		您的浏览器不支持 video 标签。
+		</video>
+	</div>	
+	<br/>
+	<div>
+		<input type="text" value='' placeholder="enter video url to play." id="ep">
+		<input type="button" value="play" id="btn">
+	</div>
+</div>
+<div data-role="footer" data-position="fixed">
+
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    var $url='tt';
+    $("#btn").click(function(){
+    if(!$("#ep").val()){
+      alert("url不能为空.");
+    }else{
+      $("#current").text($("#ep").val());
+      $("#video").attr("src",$("#ep").val());//更新ep
+      $("#video").attr("autoplay","true");//直接播放
+    }		
+  });
+
+  });
+</script>
+
+</body>
+</html>
