@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>test video</title>
+<link rel="stylesheet" href="static/jquery/jquery.mobile.min.css" />     
+<script src="static/jquery/jquery-1.7.1.min.js"></script>     
+<script src="static/jquery/jquery.mobile.min.js"></script>
+
+<style>video {object-fit:fill;}</style>
+
+</head>
+<body>
+<div>
+
+<div data-role="header" data-position="fixed" data-fullscreen="false">	 
+<h1 id='current'></h1>
+</div>
+<div data-role="content">
+	<div>
+		<video src="" controls id="video">
+		您的浏览器不支持 video 标签。
+		</video>
+	</div>	
+	<br/>
+	<div>
+		<table>
+				<tr>
+					<td colspan = "4"><input type="text" value='1' placeholder="enter video head to play." id="url"></td>
+				<tr>
+				<tr>
+					<td><input type="text" value='1' placeholder="enter video head to play." id="urlHead"></td>
+					<td><input type="text" value='1' placeholder="enter video mid to play." id="urlMid"></td>
+					<td><input type="text" value='1' placeholder="enter video tail to play." id="urlTail"></td>
+					<td><select name="myselect" id="cg">
+							<option value="mp4">mp4</option>
+						</select>
+					</td>
+				</tr>
+		</table>
+		<table><tr>
+					<td><input type="button" value="play" id="btn"></td>
+					<td><input type="button" value="下一个" id="btn_front"></td>
+					<td><input type="button" value="上一个" id="btn_back"></td>
+				</tr>
+		</table>
+	</div>
+</div>
+<div data-role="footer" data-position="fixed">
+
+</div>
+
+<script type="text/javascript">
+function paraseUrl(url)
+{
+	var patt1=new RegExp("(?<!/)/(?!/)");
+	var urlList = url.split(patt1);
+	return urlList;
+}
+
+function changePlay(isFront)
+{
+	var patt1=new RegExp("[0-9]{1,}\\.");
+	var currentS = parseInt(paraseUrl($("#video").attr('src'))[2].split(".")[0]);
+	var c = isFront?currentS+1:currentS-1;
+	var src = $("#urlHead").val()+ "/" +$("#urlMid").val()+"/"+String(c) + "." + $("#cg").val();
+	$("#current").text(src);
+	$('#urlTail').val(String(c));
+	$("#video").attr("src",src);//更新ep
+	$("#video").attr("autoplay","true");//直接播放
+}
+
+$(function(){
+var $url='tt';
+
+ $("#url").on('input',function()
+ {
+	$url = $("#url").val();
+  var urlList = paraseUrl($url); 
+  $('#urlHead').val(urlList[0]);
+  $('#urlMid').val(urlList[1]);
+  $('#urlTail').val(urlList[2].split(".")[0]);
+ });
+	
+$("#btn").click(function(){
+	if(!$("#urlHead").val() || !$("#urlMid").val() || !$("#urlTail").val()){
+		alert("ep不能为空.");
+	}else{
+		var src = $("#urlHead").val()+ "/" +$("#urlMid").val()+"/"+$("#urlTail").val() + "." + $("#cg").val();
+		$("#current").text(src);
+		$("#video").attr("src",src);//更新ep
+		$("#video").attr("autoplay","true");//直接播放
+	}
+});
+
+$("#btn_front").unbind('click').click(function(){	
+	changePlay(true);
+});
+
+$("#btn_back").unbind('click').click(function(){
+	changePlay(false);
+});
+
+
+});
+</script>
+</body>
+</html>
